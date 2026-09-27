@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Fotografie</h2>
+
+<video id="video" autoplay playsinline width="300"></video>
+<br>
+<button id="start">Permite camera</button>
+<button id="photo" disabled>Fă fotografia</button>
+
+<script>
+const video = document.getElementById("video");
+const start = document.getElementById("start");
+const photo = document.getElementById("photo");
+
+start.onclick = async () => {
+  const stream = await navigator.mediaDevices.getUserMedia({video:true});
+  video.srcObject = stream;
+  photo.disabled = false;
+};
+
+photo.onclick = () => {
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext("2d").drawImage(video,0,0);
+
+  const a = document.createElement("a");
+  a.href = canvas.toDataURL("image/jpeg");
+  a.download = "poza.jpg";
+  a.click();
+};
+</script>
+</body>
+</html>
